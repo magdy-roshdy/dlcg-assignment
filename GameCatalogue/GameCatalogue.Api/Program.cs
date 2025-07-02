@@ -1,4 +1,5 @@
 using GameCatalogue.Api.Extensions;
+using GameCatalogue.Api.Middleware;
 using GameCatalogue.Application.CQRS.Queries;
 using GameCatalogue.Application.Interfaces;
 using GameCatalogue.Application.Mapping;
@@ -13,6 +14,10 @@ builder.Services.AddOpenApi();
 builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(opt =>
   opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+
 builder.Services.AddMediatR(cfg =>
   cfg.RegisterServicesFromAssemblies(typeof(GetGamesQuery).Assembly)
 );
@@ -25,12 +30,16 @@ builder.Services.AddCors(opts =>
   opts.AddPolicy("AllowAll", p =>
     p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
 
+//build
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
 app.UseStaticFiles();
 app.UseCors("AllowAll");
 app.MapControllers();
