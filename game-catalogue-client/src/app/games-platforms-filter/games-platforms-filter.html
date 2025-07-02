@@ -1,0 +1,12 @@
+<section class="mb-4">
+    <h5 class="card-title">Platforms</h5>
+    @for (platform of options; track platform.key) {
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" [id]="platform.key" [(ngModel)]="platform.selected"
+            (change)="onToggle()" />
+        <label class="form-check-label" [for]="platform.key">
+            {{ platform.caption }}
+        </label>
+    </div>
+    }
+</section>

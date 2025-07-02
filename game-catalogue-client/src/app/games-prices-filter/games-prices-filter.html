@@ -1,0 +1,23 @@
+<section class="mb-4">
+    <h5 class="card-title">Prices</h5>
+    @for (price of options; track price.key) {
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" [id]="price.key" [(ngModel)]="price.selected"
+            (change)="onToggle()" />
+        <label class="form-check-label" [for]="price.key">
+            @if(price.key === 'free') {
+            Free
+            }
+            @if(price.key !== 'free' && price.min == null) {
+            &lt; {{ price.max | currency:'CAD' }}
+            }
+            @if(price.min != null && price.max != null) {
+            {{ price.min | currency:'CAD' }} - {{ price.max | currency:'CAD' }}
+            }
+            @if(price.key !== 'free' && price.min != null && price.max == null) {
+            &gt; {{ price.min | currency:'CAD' }}
+            }
+        </label>
+    </div>
+    }
+</section>

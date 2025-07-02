@@ -1,0 +1,64 @@
+<div class="d-flex justify-content-center my-4">
+  <div class="card shadow-sm" style="max-width: 500px; width: 100%;">
+    <div class="card-body">
+      <h5 class="card-title mb-4">Edit Game</h5>
+      <form *ngIf="gameForm" [formGroup]="gameForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="name" class="form-label">Name</label>
+          <input id="name" formControlName="name" class="form-control" />
+          @if (gameForm.controls['name'].touched && gameForm.controls['name'].invalid) {
+          <div class="text-danger small">Name is required</div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label for="price" class="form-label">Price (CAD)</label>
+          <input id="price" type="number" formControlName="price" class="form-control" />
+          @if (gameForm.controls['price'].touched && gameForm.controls['price'].hasError('required')) {
+          <div class="text-danger small">Price is required</div>
+          }
+          @if (gameForm.controls['price'].touched && gameForm.controls['price'].hasError('min')) {
+          <div class="text-danger small">Price must be ≥ 0</div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <div>
+            <a [href]="imageBaseUrl + gameForm.value.imagePath" target="_blank" rel="noopener noreferrer">
+              View current image
+            </a>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="imageFile" class="form-label">Upload New Image</label>
+          <input id="imageFile" type="file" class="form-control" (change)="onFileSelected($event)" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Platforms</label>
+          <div formGroupName="platforms" class="d-flex flex-wrap">
+            @for(opt of platformOptions; track opt.key)
+            {
+            <div class="form-check me-3 mb-2">
+              <input type="checkbox" class="form-check-input" [id]="opt.key" [formControlName]="opt.key" />
+              <label class="form-check-label" [for]="opt.key">
+                {{ opt.caption }}
+              </label>
+            </div>
+            }
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-end">
+          <button type="button" class="btn btn-secondary me-2" (click)="onCancel()">
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-primary" [disabled]="gameForm.invalid">
+            Save
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+:host {
+  display: block;
+}
+
+.card {
+  border-radius: .5rem;
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+.card-title {
+  text-align: center;
+}
+
+form .form-control {
+  border-radius: .25rem;
+}
+
+.btn {
+  min-width: 80px;
+}
